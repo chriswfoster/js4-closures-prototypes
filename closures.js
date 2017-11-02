@@ -14,11 +14,13 @@ function outer() {
   closure over the name variable. Invoke outer saving the return value into
   another variable called 'inner'. */
   
-  // Code Here
+  var inner = function(){
+    outer()
+  }
   
   //Once you do that, invoke inner.
   
-  //Code Here
+inner()
   
   
   
@@ -49,9 +51,11 @@ function outer() {
   When callJake is invoked with '435-555-9248', it returns 'Calling Jake at 435-555-9248' 
   (HINT: You will need to pass in arguments to both function invocations)
   */
+  const callJake = callFriend('Jake')
+  callJake('number')
   
-    //Code Here
-  
+
+
   
   
   
@@ -68,14 +72,21 @@ function outer() {
   /* Write a function called makeCounter that makes the following code work
   properly. */
   
-  //Code Here
-  
+  const makeCounter = function (){
+    counts = 1
+    return (
+      function (){
+      console.log(counts)
+      return counts++
+    
+    })
+    }  
   //Uncomment this once you make your function
-  //   var count = makeCounter();
-  //   count(); // 1
-  //   count(); // 2
-  //   count(); // 3
-  //   count(); // 4
+    var count = makeCounter();
+    count(); // 1
+    count(); // 2
+    count(); // 3
+    count(); // 4
   
   
   
@@ -100,15 +111,23 @@ function outer() {
   http://stackoverflow.com/questions/17776940/javascript-module-pattern-with-example?answertab=votes#tab-top
   */
   
-  function counterFactory(value) {
-  
-    // Code here.
-  
-  
-    return {
 
-    }
-  }
+  
+    function counterFactory(value) {
+      
+         var test = value
+        return{
+           inc : function (){
+           test +=1
+           return test;
+          },
+        
+          dec: function (){
+          test -= 1
+          return test
+          }
+        }
+      } 
   
   
   counter = counterFactory(10);
@@ -141,11 +160,12 @@ function outer() {
   
     var welcomeText = 'You\'re doing awesome, keep it up ';
   
-    // code message function here.
-  
+    function message(){
+    return welcomeText + firstname + ' ' + lastname+'.'
+    }
   
     //Uncommment this to return the value of your message function
-    //return message;
+    return message;
   
   }
   
@@ -183,7 +203,9 @@ function outer() {
     // Anything that is being returned is made public and can be invoked from
     // outside our lexical scope
     return {
-      // Code here.
+    publicMethod: function(){
+      return privateMethod()
+    }
     };
   
   })();
@@ -202,7 +224,12 @@ function outer() {
     var secret = 143;
 
     return {
-      // Code here
+      addToSecret: function (param){
+       return secret += param
+      },
+      takeAwayFromSecret: function (param) {
+        return secret -= param
+      }
     }
   }
   
@@ -228,12 +255,16 @@ function outer() {
    Fix the code below to log the desired output.
    */
   
-  function timeOutCounter() {
+  function timeOutCounter() { 
     for (var i = 0; i <= 5; i++) {
-      setTimeout(function() {
-          console.log(i)
-      }, i * 1000)
+      setTimeout(closureCreator(i)
+      , i * 1000) 
     }
   }
   timeOutCounter();
   
+  function closureCreator(x) {
+    return function() {
+      console.log(x)
+    }
+  }
